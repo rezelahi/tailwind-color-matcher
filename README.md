@@ -1,4 +1,3 @@
-````markdown
 # Tailwind Color Matcher
 
 ![Screenshot](./public/screenshot.png)
@@ -99,6 +98,3 @@ This project is licensed under the [MIT License](LICENSE)
 📧 [your.email@example.com](mailto:your.email@example.com)
 
 GitHub: [https://github.com/your-username/tailwind-color-matcher](https://github.com/your-username/tailwind-color-matcher)
-
-```
-```
