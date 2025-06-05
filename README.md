@@ -1,6 +1,6 @@
 # Tailwind Color Matcher
 
-![Screenshot](./public/screenshot.png)
+![Screenshot](./public/Screenshot.jpeg)
 
 **Tailwind Color Matcher** is a React + TypeScript web app that finds the closest matching Tailwind CSS color for any custom hex value. Ideal for developers who want to align custom brand colors with Tailwind’s default palette.
 
