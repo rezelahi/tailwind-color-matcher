@@ -76,7 +76,7 @@ function App() {
               />
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-800 focus:outline-none"
               >
                 Match
               </button>
