@@ -1,14 +1,20 @@
-import { useState } from 'react';
-import { findNearestTailwindColor, isValidHexColor } from './utils/colorMatcher';
+import { useState } from "react";
+import {
+  findNearestTailwindColor,
+  isValidHexColor,
+} from "./utils/colorMatcher";
+import CopyToClipboard from "./components/CopyToClipboard";
+import Footer from "./components/Footer";
 
 function App() {
-  const [hexInput, setHexInput] = useState('#3b82f6'); // Default to Tailwind blue-500
+  const [hexInput, setHexInput] = useState("#3b82f6"); // Default to Tailwind blue-500
   const [result, setResult] = useState<{
     name: string;
     shade: string | null;
     hex: string;
     tailwindClass: string;
-  } | null>(null);
+  } | null>(() => findNearestTailwindColor("#3b82f6"));
+
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,7 +22,7 @@ function App() {
     setError(null);
 
     if (!isValidHexColor(hexInput)) {
-      setError('Please enter a valid hex color (e.g. #3b82f6)');
+      setError("Please enter a valid hex color (e.g. #3b82f6)");
       setResult(null);
       return;
     }
@@ -25,30 +31,21 @@ function App() {
       const match = findNearestTailwindColor(hexInput);
       setResult(match);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid color format');
+      setError(err instanceof Error ? err.message : "Invalid color format");
       setResult(null);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow empty input or properly formatted hex
-    if (value === '' || /^#[0-9A-Fa-f]{0,6}$/i.test(value)) {
+    if (value === "" || /^#[0-9A-Fa-f]{0,6}$/i.test(value)) {
       setHexInput(value);
       setError(null);
     }
   };
 
-  const getUsageExample = () => {
-    if (!result) return '';
-    if (result.name === 'black' || result.name === 'white') {
-      return `bg-${result.name}, text-${result.name}, border-${result.name}`;
-    }
-    return `bg-${result.tailwindClass}, text-${result.tailwindClass}, border-${result.tailwindClass}`;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 text-black">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 text-black w-full">
       <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold text-gray-800 mb-2 text-center">
           Tailwind Color Matcher
@@ -59,7 +56,10 @@ function App() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="hex" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="hex"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Enter Hex Color
             </label>
             <div className="flex gap-4">
@@ -72,10 +72,11 @@ function App() {
                 className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
                 pattern="#[0-9A-Fa-f]{6}"
                 title="Enter a valid hex color (e.g. #3b82f6)"
+                autoComplete="off"
               />
               <button
                 type="submit"
-                className="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 Match
               </button>
@@ -87,7 +88,9 @@ function App() {
         {result && (
           <div className="mt-6 space-y-4 text-black">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-800">Closest Match</h2>
+              <h2 className="text-lg font-medium text-gray-800">
+                Closest Match
+              </h2>
               <div className="flex items-center space-x-2">
                 <div
                   className="size-10 rounded-lg border border-gray-200"
@@ -105,40 +108,45 @@ function App() {
 
             <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="flex flex-col items-center justify-center">
                   <p className="text-sm text-gray-500">Color</p>
                   <p className="font-medium">
                     {result.name}
                     {result.shade && `-${result.shade}`}
                   </p>
                 </div>
-                <div>
+                <div className="flex flex-col items-center justify-center">
                   <p className="text-sm text-gray-500">Hex</p>
                   <p className="font-mono font-medium">{result.hex}</p>
                 </div>
-                <div className="col-span-2">
+                <div className="flex flex-col items-center justify-center col-span-2">
                   <p className="text-sm text-gray-500">Tailwind Class</p>
                   <p className="font-mono font-medium">
                     {result.tailwindClass}
                   </p>
                 </div>
-                <div className="col-span-2">
+                <div className="flex flex-col items-center justify-center col-span-2 gap-2">
                   <p className="text-sm text-gray-500">Usage Examples</p>
-                  <p className="font-mono text-sm">
-                    {getUsageExample()}
-                  </p>
+                  <CopyToClipboard textToCopy={`bg-${result.tailwindClass}`} />
+                  <CopyToClipboard
+                    textToCopy={`text-${result.tailwindClass}`}
+                  />
+                  <CopyToClipboard
+                    textToCopy={`border-${result.tailwindClass}`}
+                  />
                 </div>
               </div>
             </div>
           </div>
         )}
-
         <div className="mt-8 pt-4 border-t border-gray-200">
           <p className="text-xs text-gray-500">
-            Note: Matches Tailwind CSS v3.0+ default color palette. Black and white are special cases without shades.
+            Note: Matches Tailwind CSS v3.0+ default color palette. Black and
+            white are special cases without shades.
           </p>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
