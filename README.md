@@ -13,9 +13,9 @@
 - ⚡ Built with Vite, React, and TypeScript for blazing-fast performance
 - 🌈 Supports all default Tailwind CSS v3.0+ colors
 
-## 🚀 Live Demo
+<!-- ## 🚀 Live Demo -->
 
-👉 [Live Demo](https://your-deployment-url.com)
+<!-- 👉 [Live Demo](https://your-deployment-url.com) -->
 <!-- Replace the above link with your actual deployed app URL -->
 
 ## 📦 Installation
@@ -58,8 +58,6 @@ npm run dev
 * [React](https://reactjs.org/)
 * [TypeScript](https://www.typescriptlang.org/)
 * [Tailwind CSS](https://tailwindcss.com/)
-* [ESLint](https://eslint.org/)
-* [Prettier](https://prettier.io/)
 
 ## 📁 Project Structure
 
@@ -93,8 +91,8 @@ This project is licensed under the [MIT License](LICENSE)
 
 ## 📬 Contact
 
-**Your Name**
-[@yourtwitter](https://twitter.com/yourtwitter)
-📧 [your.email@example.com](mailto:your.email@example.com)
+**Reza Elahi**
+<!-- [@yourtwitter](https://twitter.com/yourtwitter) -->
+<!-- 📧 [your.email@example.com](mailto:your.email@example.com) -->
 
-GitHub: [https://github.com/your-username/tailwind-color-matcher](https://github.com/your-username/tailwind-color-matcher)
+GitHub: [https://github.com/rezelahi](https://github.com/rezelahi)
