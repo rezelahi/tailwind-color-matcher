@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useRef, useLayoutEffect } from "react";
+import React, { forwardRef, useRef, useLayoutEffect, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import type { RootState } from "@react-three/fiber";
 import { Color, Mesh, ShaderMaterial } from "three";
@@ -22,7 +22,8 @@ interface SilkUniforms {
   uSpeed: UniformValue<number>;
   uScale: UniformValue<number>;
   uNoiseIntensity: UniformValue<number>;
-  uColor: UniformValue<Color>;
+  uColorLeft: UniformValue<Color>;
+  uColorRight: UniformValue<Color>;
   uRotation: UniformValue<number>;
   uTime: UniformValue<number>;
   [uniform: string]: IUniform;
@@ -44,7 +45,8 @@ varying vec2 vUv;
 varying vec3 vPosition;
 
 uniform float uTime;
-uniform vec3  uColor;
+uniform vec3  uColorLeft;
+uniform vec3  uColorRight;
 uniform float uSpeed;
 uniform float uScale;
 uniform float uRotation;
@@ -79,7 +81,11 @@ void main() {
                                    0.02 * tOffset) +
                            sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
 
-  vec4 col = vec4(uColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;
+  // Sharp but smooth color transition at the center
+  float side = step(0.5, vUv.x);
+  vec3 silkColor = mix(uColorLeft, uColorRight, side);
+
+  vec4 col = vec4(silkColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;
   col.a = 1.0;
   gl_FragColor = col;
 }
@@ -128,7 +134,8 @@ SilkPlane.displayName = "SilkPlane";
 export interface SilkProps {
   speed?: number;
   scale?: number;
-  color?: string;
+  colorLeft?: string;
+  colorRight?: string;
   noiseIntensity?: number;
   rotation?: number;
 }
@@ -136,23 +143,33 @@ export interface SilkProps {
 const Silk: React.FC<SilkProps> = ({
   speed = 5,
   scale = 1,
-  color = "#7B7481",
+  colorLeft = "#1e96fc",
+  colorRight = "#fcf300",
   noiseIntensity = 1.5,
   rotation = 0,
 }) => {
   const meshRef = useRef<Mesh>(null);
 
-  const uniforms = useMemo<SilkUniforms>(
-    () => ({
-      uSpeed: { value: speed },
-      uScale: { value: scale },
-      uNoiseIntensity: { value: noiseIntensity },
-      uColor: { value: new Color(...hexToNormalizedRGB(color)) },
-      uRotation: { value: rotation },
-      uTime: { value: 0 },
-    }),
-    [speed, scale, noiseIntensity, color, rotation]
-  );
+  // Create uniforms ONCE
+  const uniforms = useRef<SilkUniforms>({
+    uSpeed: { value: speed },
+    uScale: { value: scale },
+    uNoiseIntensity: { value: noiseIntensity },
+    uColorLeft: { value: new Color(...hexToNormalizedRGB(colorLeft)) },
+    uColorRight: { value: new Color(...hexToNormalizedRGB(colorRight)) },
+    uRotation: { value: rotation },
+    uTime: { value: 0 },
+  }).current;
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    uniforms.uSpeed.value = speed;
+    uniforms.uScale.value = scale;
+    uniforms.uNoiseIntensity.value = noiseIntensity;
+    uniforms.uColorLeft.value.set(...hexToNormalizedRGB(colorLeft));
+    uniforms.uColorRight.value.set(...hexToNormalizedRGB(colorRight));
+    uniforms.uRotation.value = rotation;
+  }, [speed, scale, noiseIntensity, colorLeft, colorRight, rotation]);
 
   return (
     <Canvas dpr={[1, 2]} frameloop="always">
