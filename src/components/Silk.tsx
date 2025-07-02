@@ -161,14 +161,14 @@ const Silk: React.FC<SilkProps> = ({
     uTime: { value: 0 },
   }).current;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    uniforms.uSpeed.value = speed;
-    uniforms.uScale.value = scale;
-    uniforms.uNoiseIntensity.value = noiseIntensity;
-    uniforms.uColorLeft.value.set(...hexToNormalizedRGB(colorLeft));
-    uniforms.uColorRight.value.set(...hexToNormalizedRGB(colorRight));
-    uniforms.uRotation.value = rotation;
+      uniforms.uSpeed.value = speed;
+      uniforms.uScale.value = scale;
+      uniforms.uNoiseIntensity.value = noiseIntensity;
+      uniforms.uColorLeft.value.set(...hexToNormalizedRGB(colorLeft));
+      uniforms.uColorRight.value.set(...hexToNormalizedRGB(colorRight));
+      uniforms.uRotation.value = rotation;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [speed, scale, noiseIntensity, colorLeft, colorRight, rotation]);
 
   return (
