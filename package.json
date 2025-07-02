@@ -12,16 +12,19 @@
     "deploy": "gh-pages -d dist --repo https://github.com/rezelahi/tailwind-color-matcher.git"
   },
   "dependencies": {
+    "@react-three/fiber": "^9.1.4",
     "@tailwindcss/vite": "^4.1.8",
     "lucide-react": "^0.513.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "three": "^0.178.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "@types/three": "^0.178.0",
     "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
