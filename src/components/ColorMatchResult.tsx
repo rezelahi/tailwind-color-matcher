@@ -1,5 +1,6 @@
 import ColorPreview from "./ColorPreview";
 import UsageExamples from "./UsageExamples";
+import SplitText from "./SplitText";
 
 interface ColorMatchResultProps {
   result: {
@@ -23,18 +24,33 @@ const ColorMatchResult = ({ result, inputColor }: ColorMatchResultProps) => {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col items-center justify-center">
             <p className="text-sm text-gray-500">Color</p>
-            <p className="font-medium">
-              {result.name}
-              {result.shade && `-${result.shade}`}
-            </p>
+            <SplitText
+              key={`${result.name}${result.shade ? `-${result.shade}` : ""}`}
+              text={`${result.name}${result.shade ? `-${result.shade}` : ""}`}
+              className="font-medium"
+              delay={50}
+              duration={0.4}
+            />
           </div>
           <div className="flex flex-col items-center justify-center">
             <p className="text-sm text-gray-500">Hex</p>
-            <p className="font-mono font-medium">{result.hex}</p>
+            <SplitText
+              key={result.hex}
+              text={result.hex}
+              className="font-mono font-medium"
+              delay={50}
+              duration={0.4}
+            />
           </div>
           <div className="flex flex-col items-center justify-center col-span-2">
             <p className="text-sm text-gray-500">Tailwind Class</p>
-            <p className="font-mono font-medium">{result.tailwindClass}</p>
+            <SplitText
+              key={result.tailwindClass}
+              text={result.tailwindClass}
+              className="font-mono font-medium"
+              delay={50}
+              duration={0.4}
+            />
           </div>
           <UsageExamples tailwindClass={result.tailwindClass} />
         </div>
