@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist --repo https://github.com/rezelahi/tailwind-color-matcher.git"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@react-three/fiber": "^9.1.4",
